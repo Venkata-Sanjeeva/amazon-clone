@@ -235,3 +235,12 @@
 .is-editing-quantity .update-quantity-link {
   display: none;
 }
+
+.js-cart-alert {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: hsl(0, 0%, 0%);
+  background-color: rgb(255, 216, 20);
+  padding: 10px;
+  text-align: center;
+}
