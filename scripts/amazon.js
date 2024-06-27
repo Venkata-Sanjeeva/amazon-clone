@@ -4,6 +4,34 @@ import {formatCurrency} from './utils/money.js';
 
 loadProducts(renderProductsGrid);
 
+const timeoutIds = {}; // Object to store timeout IDs for each product
+
+function addedMessage(productId) {
+  const button = document.querySelector(`.js-added-${productId}-btn`);
+
+  if (timeoutIds[productId]) {
+    clearTimeout(timeoutIds[productId]); // Clear the existing timeout
+  }
+
+  button.classList.add("added-message-btn");
+
+  timeoutIds[productId] = setTimeout(() => {
+    button.classList.remove("added-message-btn");
+    delete timeoutIds[productId]; // Remove the timeout ID after it has been cleared
+  }, 2000);
+}
+
+/*
+function addedMessage(productId){
+  // console.log(document.querySelector(`.js-added-${productId}-btn`));
+  document.querySelector(`.js-added-${productId}-btn`).classList.add("added-message-btn");
+  let timeOutId = setTimeout(() => {
+    document.querySelector(`.js-added-${productId}-btn`).classList.remove("added-message-btn");
+    clearTimeout(timeOutId);
+  }, 2000);
+}
+*/
+
 function renderProductsGrid() {
   let productsHTML = '';
 
@@ -50,7 +78,7 @@ function renderProductsGrid() {
 
         <div class="product-spacer"></div>
 
-        <div class="added-to-cart">
+        <div class="added-to-cart js-added-${product.id}-btn">
           <img src="images/icons/checkmark.png">
           Added
         </div>
@@ -82,6 +110,7 @@ function renderProductsGrid() {
         const productId = button.dataset.productId;
         addToCart(productId);
         updateCartQuantity();
+        addedMessage(productId);
       });
     });
 }
