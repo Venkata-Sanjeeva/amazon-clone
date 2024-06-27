@@ -1,4 +1,4 @@
-import {cart} from '../../data/cart.js';
+import {calculateCartQuantity, cart} from '../../data/cart.js';
 import {getProduct} from '../../data/products.js';
 import {getDeliveryOption} from '../../data/deliveryOptions.js';
 import {formatCurrency} from '../utils/money.js';
@@ -7,7 +7,7 @@ import {addOrder} from '../../data/orders.js';
 export function renderPaymentSummary() {
   let productPriceCents = 0;
   let shippingPriceCents = 0;
-
+  let cartQuantity = calculateCartQuantity();
   cart.forEach((cartItem) => {
     const product = getProduct(cartItem.productId);
     productPriceCents += product.priceCents * cartItem.quantity;
@@ -26,7 +26,7 @@ export function renderPaymentSummary() {
     </div>
 
     <div class="payment-summary-row">
-      <div>Items (3):</div>
+      <div class="js-payment-summary-items">Items (${cartQuantity}):</div>
       <div class="payment-summary-money">
         $${formatCurrency(productPriceCents)}
       </div>
@@ -69,6 +69,7 @@ export function renderPaymentSummary() {
   document.querySelector('.js-payment-summary')
     .innerHTML = paymentSummaryHTML;
 
+  // updateCartQuantity("js-payment-summary-items", "");
   document.querySelector('.js-place-order')
     .addEventListener('click', async () => {
       try {

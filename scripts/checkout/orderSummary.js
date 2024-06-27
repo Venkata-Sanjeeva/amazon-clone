@@ -135,7 +135,7 @@ export function renderOrderSummary() {
           `.js-cart-item-container-${productId}`
         );
         container.remove();
-        updateCartQuantity();
+        updateCartQuantity("js-return-to-home-link", "items");
         renderPaymentSummary();
       });
     });

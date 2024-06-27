@@ -1,9 +1,8 @@
-import { calculateCartQuantity } from "../../data/cart.js";
+import { calculateCartQuantity, cart } from "../../data/cart.js";
 
-export function updateCartQuantity() {
+export function updateCartQuantity(className, other) {
 
     const cartQuantity = calculateCartQuantity();
-
-    document.querySelector('.js-return-to-home-link')
-        .innerHTML = `${cartQuantity} items`;
+    document.querySelector(`.${className}`)
+        .innerHTML = `${cartQuantity} ${other}`;
 }

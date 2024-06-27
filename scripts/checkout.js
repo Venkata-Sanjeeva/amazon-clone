@@ -8,7 +8,7 @@ import { updateCartQuantity } from './utils/updateCartQuantity.js';
 
 
 
-updateCartQuantity();
+updateCartQuantity('js-return-to-home-link', "items");
 
 function updateLink() {
 
