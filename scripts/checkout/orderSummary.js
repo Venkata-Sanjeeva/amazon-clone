@@ -137,7 +137,6 @@ export function renderOrderSummary() {
         container.remove();
 
         if (cart.length === 0) {
-          console.log("Zero");
           document.querySelector('.js-order-summary')
           .innerHTML = `<p class="js-cart-alert">No Items Added to Cart !</p>`;
         }
