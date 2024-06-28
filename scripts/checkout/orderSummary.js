@@ -142,8 +142,14 @@ export function renderOrderSummary() {
           `.js-cart-item-container-${productId}`
         );
         container.remove();
+
+        if (cart.length === 0) {
+          console.log("Zero");
+          document.querySelector('.js-order-summary')
+          .innerHTML = `<p class="js-cart-alert">No Items Added to Cart !</p>`;
+        }
+
         updateCartQuantity("js-return-to-home-link", "items");
-        renderOrderSummary();
         renderPaymentSummary();
       });
     });
