@@ -3,7 +3,7 @@ import {products, getProduct} from '../../data/products.js';
 import {formatCurrency} from '../utils/money.js';
 import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
+import {deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js';
 import {renderPaymentSummary} from './paymentSummary.js';
 import { updateCartQuantity } from '../utils/updateCartQuantity.js';
 
@@ -19,14 +19,8 @@ export function renderOrderSummary() {
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-    const today = dayjs();
-    const deliveryDate = today.add(
-      deliveryOption.deliveryDays,
-      'days'
-    );
-    const dateString = deliveryDate.format(
-      'dddd, MMMM D'
-    );
+    // On weekends DeliveryDates have been Skipped
+    const dateString = calculateDeliveryDate(deliveryOption);
     
     cartSummaryHTML += `
       <div class="cart-item-container
@@ -123,7 +117,6 @@ export function renderOrderSummary() {
   }
 
   if (cart.length === 0) {
-    console.log("Zero");
     document.querySelector('.js-order-summary')
     .innerHTML = `<p class="js-cart-alert">No Items Added to Cart !</p>`;
   } else{
