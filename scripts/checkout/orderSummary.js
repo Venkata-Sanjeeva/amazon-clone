@@ -5,7 +5,7 @@ import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import {deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js';
 import {renderPaymentSummary} from './paymentSummary.js';
-import { updateCartQuantity } from '../utils/updateCartQuantity.js';
+import {updateCartQuantity} from '../utils/updateCartQuantity.js';
 
 export function renderOrderSummary() {
   let cartSummaryHTML = '';

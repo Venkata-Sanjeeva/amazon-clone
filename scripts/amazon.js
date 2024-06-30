@@ -1,43 +1,35 @@
 import {cart, addToCart} from '../data/cart.js';
 import {products, loadProducts} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
-import {updateCartQuantity} from './utils/updateCartQuantity.js';
 
-updateCartQuantity("js-cart-quantity", "");
 loadProducts(renderProductsGrid);
-
-const timeoutIds = {}; // Object to store timeout IDs for each product
-
-function addedMessage(productId) {
-  const button = document.querySelector(`.js-added-${productId}-btn`);
-
-  if (timeoutIds[productId]) {
-    clearTimeout(timeoutIds[productId]); // Clear the existing timeout
-  }
-
-  button.classList.add("added-message-btn");
-
-  timeoutIds[productId] = setTimeout(() => {
-    button.classList.remove("added-message-btn");
-    delete timeoutIds[productId]; // Remove the timeout ID after it has been cleared
-  }, 2000);
-}
-
-/*
-function addedMessage(productId){
-  // console.log(document.querySelector(`.js-added-${productId}-btn`));
-  document.querySelector(`.js-added-${productId}-btn`).classList.add("added-message-btn");
-  let timeOutId = setTimeout(() => {
-    document.querySelector(`.js-added-${productId}-btn`).classList.remove("added-message-btn");
-    clearTimeout(timeOutId);
-  }, 2000);
-}
-*/
 
 function renderProductsGrid() {
   let productsHTML = '';
 
-  products.forEach((product) => {
+  const url = new URL(window.location.href);
+  const search = url.searchParams.get('search');
+
+  let filteredProducts = products;
+
+  // If a search exists in the URL parameters,
+  // filter the products that match the search.
+  if (search) {
+    filteredProducts = products.filter((product) => {
+      let matchingKeyword = false;
+
+      product.keywords.forEach((keyword) => {
+        if (keyword.toLowerCase().includes(search.toLowerCase())) {
+          matchingKeyword = true;
+        }
+      });
+
+      return matchingKeyword ||
+        product.name.toLowerCase().includes(search.toLowerCase());
+    });
+  }
+
+  filteredProducts.forEach((product) => {
     productsHTML += `
       <div class="product-container">
         <div class="product-image-container">
@@ -80,7 +72,7 @@ function renderProductsGrid() {
 
         <div class="product-spacer"></div>
 
-        <div class="added-to-cart js-added-${product.id}-btn">
+        <div class="added-to-cart">
           <img src="images/icons/checkmark.png">
           Added
         </div>
@@ -112,7 +104,12 @@ function renderProductsGrid() {
         const productId = button.dataset.productId;
         addToCart(productId);
         updateCartQuantity();
-        addedMessage(productId);
       });
+    });
+
+  document.querySelector('.js-search-button')
+    .addEventListener('click', () => {
+      const search = document.querySelector('.js-search-bar').value;
+      window.location.href = `amazon.html?search=${search}`;
     });
 }
